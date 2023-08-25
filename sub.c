@@ -1,28 +1,29 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
 #include "monty.h"
-
 /**
- * _sub -  substracts first two nodes of a stack
- * @stack: from main
- * @line_cnt: number of lines
- *
- * Return: void
+  *f_sub- perform sustration
+  *@head: head of stck
+  *@counter: line_number counter
+  *Return: void
  */
-void _sub(stack_t **stack, unsigned int line_cnt)
+void f_sub(stack_t **head, unsigned int counter)
 {
-	int result;
+	stack_t *aux;
+	int sus, nodes;
 
-	if (!stack || !*stack || !((*stack)->next))
+	aux = *head;
+	for (nodes = 0; aux != NULL; nodes++)
+		aux = aux->next;
+	if (nodes < 2)
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short\n", line_cnt);
-		status = EXIT_FAILURE;
-		return;
+		fprintf(stderr, "L%d: can't sub, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
 	}
-
-	result = ((*stack)->next->n) - ((*stack)->n);
-	pop(stack, line_cnt);/*For top node*/
-	(*stack)->n = result;
+	aux = *head;
+	sus = aux->next->n - aux->n;
+	aux->next->n = sus;
+	*head = aux->next;
+	free(aux);
 }

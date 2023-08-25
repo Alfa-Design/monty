@@ -1,34 +1,40 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
 #include "monty.h"
-
 /**
- * _div: divide next top value by top value
- * @stack: from main
- * @line_cnt: number of lines
- *
- * Return: nothing
- */
-void _div(stack_t **stack, unsigned int line_cnt)
+ * f_div - divide top two elements of a stack.
+ * @head: head of stack
+ * @counter: line_number
+ * Return: void
+*/
+void f_div(stack_t **head, unsigned int counter)
 {
-	int result;
+	stack_t *h;
+	int len = 0, aux;
 
-	if (!stack || !*stack || !((*stack)->next))
+	h = *head;
+	while (h)
 	{
-		fprintf(stderr, "L%d: can't div, stack too short\n", line_cnt);
-		status = EXIT_FAILURE;
-		return;
+		h = h->next;
+		len++;
 	}
-	if (((*stack)->n) == 0)
+	if (len < 2)
 	{
-		fprintf(stderr, "L%d: division by zero\n", line_cnt);
-		status = EXIT_FAILURE;
-		return;
+		fprintf(stderr, "L%d: can't div, stack too short\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
 	}
-
-	result = ((*stack)->next->n) / ((*stack)->n);
-	pop(stack, line_cnt);/*For top node*/
-	(*stack)->n = result;
+	h = *head;
+	if (h->n == 0)
+	{
+		fprintf(stderr, "L%d: division by zero\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE);
+	}
+	aux = h->next->n / h->n;
+	h->next->n = aux;
+	*head = h->next;
+	free(h);
 }

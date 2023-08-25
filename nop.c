@@ -1,14 +1,12 @@
 #include "monty.h"
-
 /**
- * nop: lol this does nothing
- * @stack: doesnt matter
- * @line_cnt : number of lines
- *
- * return: nothng
+  *f_nop- performs nothing
+  *@head: head of stck
+  *@counter: line_number
+  *Return: void 
  */
-void nop(stack_t **stack, unsigned int line_cnt)
+void f_nop(stack_t **head, unsigned int counter)
 {
-	(void) stack;
-	(void) line_cnt;
+	(void) counter;
+	(void) head;
 }
