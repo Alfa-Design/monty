@@ -1,45 +1,83 @@
 #include "monty.h"
-bus_t bus = {NULL, NULL, NULL, 0};
+stack_t *head = NULL;
+
 /**
-* main - code interpreter for monty
-* @argc: number of args
-* @argv: file location of monty
-* Return: on success 0
-*/
+ * main - entry point of main func
+ * @argc: arguments counter
+ * @argv: args list
+ * Return: 0 always
+ */
+
 int main(int argc, char *argv[])
 {
-	char *content;
-	FILE *file;
-	size_t size = 0;
-	ssize_t read_line = 1;
-	stack_t *stack = NULL;
-	unsigned int counter = 0;
-
 	if (argc != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	file = fopen(argv[1], "r");
-	bus.file = file;
-	if (!file)
+	open_file(argv[1]);
+	free_nodes();
+	return (0);
+}
+
+/**
+ * create_node - Creating node
+ * @n: Number passed node
+ * Return: on sucess a pointer to node else NULL.
+ */
+stack_t *create_node(int n)
+{
+	stack_t *node;
+
+	node = malloc(sizeof(stack_t));
+	if (node == NULL)
+		err(4);
+	node->next = NULL;
+	node->prev = NULL;
+	node->n = n;
+	return (node);
+}
+
+/**
+ * free_nodes - Frees nodes in stack
+ */
+void free_nodes(void)
+{
+	stack_t *tmp;
+
+	if (head == NULL)
+		return;
+
+	while (head != NULL)
 	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+}
+
+
+/**
+ * add_to_queue - Adds node to queue.
+ * @new_node: Pointer to new node.
+ * @ln: line number of opcode.
+ */
+void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln)
+{
+	stack_t *tmp;
+
+	if (new_node == NULL || *new_node == NULL)
 		exit(EXIT_FAILURE);
-	}
-	while (read_line > 0)
+	if (head == NULL)
 	{
-		content = NULL;
-		read_line = getline(&content, &size, file);
-		bus.content = content;
-		counter++;
-		if (read_line > 0)
-		{
-			execute(content, &stack, counter, file);
-		}
-		free(content);
+		head = *new_node;
+		return;
 	}
-	free_stack(stack);
-	fclose(file);
-return (0);
+	tmp = head;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+
+	tmp->next = *new_node;
+	(*new_node)->prev = tmp;
+
 }
