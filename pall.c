@@ -2,8 +2,7 @@
 /**
  * f_pall - prints stack
  * @head: head of stack
- * @counter: not in use
- * Return: void
+ * Return: always 0
 */
 void f_pall(stack_t **head, unsigned int counter)
 {

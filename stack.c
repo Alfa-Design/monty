@@ -1,9 +1,9 @@
 #include "monty.h"
 /**
- * f_stack - prints top
+ * f_stack - prints top of stack
  * @head: head of stack
- * @counter: line_number
- * Return: void
+ * @counter: count line_number
+ * Return: always 0
 */
 void f_stack(stack_t **head, unsigned int counter)
 {
